@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+"""Choose a cmux theme; preserve running sessions."""
+import os, subprocess, sys
+from pathlib import Path
+ROOT = Path(__file__).resolve().parent
+THEMES = ['slate', 'cool-light', 'plum', 'dark', 'forest', 'graphite', 'light', 'parchment', 'mist', 'white']
+def main():
+    args = sys.argv[1:]
+    if not args:
+        print('Choose a theme:')
+        for i, name in enumerate(THEMES, 1): print(f'{i:2}. {name}')
+        print(' r. Restore previous settings\n q. Quit')
+        choice = input('> ').strip()
+        if choice == 'q': return
+        args = ['restore' if choice == 'r' else THEMES[int(choice)-1] if choice.isdigit() and 1 <= int(choice) <= len(THEMES) else choice]
+    action = args[0]
+    if action in ('codex', 'claude'):
+        os.execv(sys.executable, [sys.executable, str(ROOT/'tools/launch.py'), *args])
+    if action in ('--help', '-h'):
+        print('./switch-theme [theme | restore | codex | claude]'); return
+    cmd = [sys.executable, str(ROOT/'tools/install.py')]
+    if action == 'restore':
+        backups = sorted(p for p in (Path.home()/'.config/cmux/reading-backups').glob('*') if (p/'manifest.json').is_file() and not (p/'.restored').exists())
+        if not backups: raise SystemExit('No previous settings to restore.')
+        cmd += ['--rollback', str(backups[-1]), '--apply']
+    elif action in THEMES: cmd += [action, '--apply']
+    else: raise SystemExit('Unknown choice. Run ./switch-theme for the menu.')
+    subprocess.run(cmd, check=True)
+    cmux = Path('/Applications/cmux.app/Contents/Resources/bin/cmux')
+    if cmux.exists():
+        result = subprocess.run([str(cmux), 'reload-config'], timeout=15)
+        if result.returncode: print('Settings saved. Reload cmux configuration when the app is running.')
+    print('Open a new shell for the prompt. Existing jobs are unchanged.')
+if __name__ == '__main__':
+    try: main()
+    except (KeyboardInterrupt, EOFError): print('\nCancelled.')
+    except (ValueError, subprocess.SubprocessError) as exc: raise SystemExit(str(exc))
