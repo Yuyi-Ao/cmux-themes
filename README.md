@@ -23,52 +23,62 @@ Normal CLI arguments can follow `codex` or `claude`. These launchers do not chan
 
 ## Themes
 
-Figures below are **illustrative palette samples**, not screenshots of the apps. They use fictional `~/demo` content; actual Codex/Claude layout and some UI colors depend on the app version. No personal screenshots or conversations are included.
+Real cmux screenshots, captured in an isolated `/tmp/theme-demo` workspace with sample code. These are unedited window captures, not rendered mockups. Click an image to view it at full size.
 
 ### slate
 
-![slate palette preview](previews/slate.svg)
+![slate running in cmux](previews/slate-shell.png)
 
 ### cool-light
 
-![cool-light palette preview](previews/cool-light.svg)
+![cool-light running in cmux](previews/cool-light-shell.png)
 
 ### plum
 
-![plum palette preview](previews/plum.svg)
+![plum running in cmux](previews/plum-shell.png)
 
 ### dark
 
-![dark palette preview](previews/dark.svg)
+![dark running in cmux](previews/dark-shell.png)
 
 ### forest
 
-![forest palette preview](previews/forest.svg)
+![forest running in cmux](previews/forest-shell.png)
 
 ### graphite
 
-![graphite palette preview](previews/graphite.svg)
+![graphite running in cmux](previews/graphite-shell.png)
 
 ### light
 
-![light palette preview](previews/light.svg)
+![light running in cmux](previews/light-shell.png)
 
 ### parchment
 
-![parchment palette preview](previews/parchment.svg)
+![parchment running in cmux](previews/parchment-shell.png)
 
 ### mist
 
-![mist palette preview](previews/mist.svg)
+![mist running in cmux](previews/mist-shell.png)
 
 ### white
 
-![white palette preview](previews/white.svg)
+![white running in cmux](previews/white-shell.png)
+
+## Codex in cmux
+
+Real Codex CLI theme-picker screenshots showing its built-in sample diff, not a model conversation. Some UI accents are controlled by Codex itself.
+
+| Slate | Cool Light |
+| --- | --- |
+| ![Slate Codex](previews/slate-codex.png) | ![Cool Light Codex](previews/cool-light-codex.png) |
+
+Claude theme configs are included, but Claude screenshots are not yet available.
 
 ## Files
 
 - `themes/`: ten sets of terminal, prompt, and CLI theme configuration.
-- `previews/`: sanitized sample figures shown above.
+- `previews/`: real cmux screenshots shown above.
 - `tools/`: switching and CLI launch helpers.
 - `prompt-variants/minimal/`: optional minimal prompts for Slate, Cool Light, and Plum.
 
