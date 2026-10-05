@@ -1,0 +1,66 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Three restrained Powerline segments: directory, Git, language versions.
+# No Apple decoration. Existing module behavior and full directory path retained.
+format = """
+[░▒▓](#59475f)\
+$directory\
+[](fg:#59475f bg:#453b4e)\
+$git_branch\
+$git_status\
+[](fg:#453b4e bg:#362f3f)\
+$nodejs\
+$bun\
+$rust\
+$golang\
+$php\
+[ ](fg:#362f3f)\
+\n$character"""
+
+[directory]
+style = "fg:#e0d4e3 bg:#59475f"
+format = "[ $path ]($style)"
+truncation_length = 0
+truncate_to_repo = false
+home_symbol = "~"
+
+[git_branch]
+symbol = ""
+style = "fg:#c6b1ce bg:#453b4e"
+format = "[ $symbol $branch ]($style)"
+
+[git_status]
+style = "fg:#c6b1ce bg:#453b4e"
+format = '[($all_status$ahead_behind )]($style)'
+
+[nodejs]
+symbol = ""
+style = "fg:#bfb7ce bg:#362f3f"
+format = "[ $symbol ($version) ]($style)"
+
+[bun]
+symbol = ""
+style = "fg:#bfb7ce bg:#362f3f"
+format = "[ $symbol ($version) ]($style)"
+
+[rust]
+symbol = ""
+style = "fg:#bfb7ce bg:#362f3f"
+format = "[ $symbol ($version) ]($style)"
+
+[golang]
+symbol = ""
+style = "fg:#bfb7ce bg:#362f3f"
+format = "[ $symbol ($version) ]($style)"
+
+[php]
+symbol = ""
+style = "fg:#bfb7ce bg:#362f3f"
+format = "[ $symbol ($version) ]($style)"
+
+[time]
+disabled = true
+
+[character]
+success_symbol = "[❯](fg:#bba4c4)"
+error_symbol = "[❯](fg:#c98c91)"

@@ -1,0 +1,61 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$nodejs\
+$bun\
+$rust\
+$golang\
+$php\
+\n$character"""
+
+[directory]
+style = "fg:#b8bbbe"
+format = "[ $path ]($style)"
+truncation_length = 0
+truncate_to_repo = false
+home_symbol = "~"
+
+
+[git_branch]
+symbol = ""
+style = "fg:#a0adb8"
+format = '[[ $symbol $branch ](fg:#a0adb8)]($style)'
+
+[git_status]
+style = "fg:#a0adb8"
+format = '[[($all_status$ahead_behind )](fg:#a0adb8)]($style)'
+
+[nodejs]
+symbol = ""
+style = "fg:#afa9a1"
+format = '[[ $symbol ($version) ](fg:#afa9a1)]($style)'
+
+[bun]
+symbol = ""
+style = "fg:#afa9a1"
+format = '[[ $symbol ($version) ](fg:#afa9a1)]($style)'
+
+[rust]
+symbol = ""
+style = "fg:#afa9a1"
+format = '[[ $symbol ($version) ](fg:#afa9a1)]($style)'
+
+[golang]
+symbol = ""
+style = "fg:#afa9a1"
+format = '[[ $symbol ($version) ](fg:#afa9a1)]($style)'
+
+[php]
+symbol = ""
+style = "fg:#afa9a1"
+format = '[[ $symbol ($version) ](fg:#afa9a1)]($style)'
+
+[time]
+disabled = true
+
+[character]
+success_symbol = "[❯](fg:#a0adb8)"
+error_symbol = "[❯](fg:#c58b88)"

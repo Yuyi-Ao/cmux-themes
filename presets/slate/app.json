@@ -1,0 +1,12 @@
+{
+  "app": {
+    "appearance": "dark"
+  },
+  "sidebarAppearance": {
+    "matchTerminalBackground": true,
+    "tintColor": "#22272e",
+    "lightModeTintColor": "#22272e",
+    "darkModeTintColor": "#22272e",
+    "tintOpacity": 1
+  }
+}

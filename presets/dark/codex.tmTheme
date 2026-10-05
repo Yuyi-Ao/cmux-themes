@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>cmux-reading-dark</string>
+	<key>settings</key>
+	<array>
+		<dict>
+			<key>settings</key>
+			<dict>
+				<key>background</key>
+				<string>#242424</string>
+				<key>foreground</key>
+				<string>#c9c3b8</string>
+				<key>caret</key>
+				<string>#b8b4a8</string>
+				<key>selection</key>
+				<string>#45433e</string>
+				<key>lineHighlight</key>
+				<string>#2e2e2d</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>scope</key>
+			<string>comment</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#87837d</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>scope</key>
+			<string>string</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#a9b665</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>scope</key>
+			<string>keyword, storage</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#d3869b</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>scope</key>
+			<string>constant.numeric, constant.language</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#d8a657</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>scope</key>
+			<string>entity.name.function, support.function</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#7daea3</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>scope</key>
+			<string>entity.name.type</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#89b482</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>scope</key>
+			<string>markup.inserted</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#a9b665</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>scope</key>
+			<string>markup.deleted, invalid</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#ea6962</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>scope</key>
+			<string>markup.heading</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#7daea3</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
