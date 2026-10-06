@@ -24,7 +24,7 @@ Changing cmux colors preserves your selected Starship style, including its own p
 
 ## A few favorites
 
-Real cmux screenshots, cropped and arranged for a compact preview. These are selected examples, not every possible combination; original captures remain in [previews/](previews/).
+Real cmux screenshots, cropped and stacked at full page width for readability. These are selected examples, not every possible combination; click a preview to enlarge it. Original captures remain in [previews/](previews/).
 
 **Terminal colors: Slate, Cool Light, and Plum**
 

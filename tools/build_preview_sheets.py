@@ -33,8 +33,8 @@ def main():
             run('-size', f'{width}x38', 'xc:#151922', '-font', args.font, '-pointsize', '20', '-fill', '#d5dce3', '-gravity', 'West', '-annotate', '+14+0', title, label)
             run(label, body, '-append', result)
             return result
-        theme_tiles = [tile(ROOT/'previews'/f'{n}-shell.png', n, '1885x950+500+115', 720, n) for n in THEMES]
-        run(*theme_tiles, '+append', ROOT/'previews/themes-overview.png')
+        theme_tiles = [tile(ROOT/'previews'/f'{n}-shell.png', n, '1885x950+500+115', 1440, n) for n in THEMES]
+        run(*theme_tiles, '-append', ROOT/'previews/themes-overview.png')
         style_tiles = [tile(ROOT/'previews/starship'/f'{n}.png', n, '1885x170+500+230', 1440, 'style-'+n) for n in STYLES]
         run(*style_tiles, '-append', ROOT/'previews/starship-overview.png')
     print('Built themes-overview.png and starship-overview.png. Inspect both before publishing.')
