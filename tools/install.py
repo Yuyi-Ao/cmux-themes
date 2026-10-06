@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Preview/install cmux-only presets. Never restart apps or touch credentials."""
-import argparse, datetime, hashlib, json, os, re, shutil
+"""Install one independent cmux theme or Starship style with reversible backups."""
+import argparse, datetime, hashlib, json, re, shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -9,12 +9,6 @@ END = '# <<< cmux-reading-config <<<'
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
-
-def normalize_style(style):
-    # Keep existing commands and saved selections working after directory cleanup.
-    if style == 'tokyo-night/terminal':
-        return 'tokyo-night'
-    return style.removeprefix('community/')
 
 def merge(base, patch):
     for key, value in patch.items():
@@ -28,65 +22,59 @@ def merge(base, patch):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('preset', choices=sorted(p.name for p in (ROOT / 'themes').iterdir() if p.is_dir()), nargs='?', default='dark')
-    styles = ['theme'] + sorted(str(p.relative_to(ROOT / 'starship').with_suffix('')) for p in (ROOT / 'starship').rglob('*.toml'))
-    parser.add_argument('--starship', type=normalize_style, choices=styles, help='Starship style, independent of terminal theme')
+    action = parser.add_mutually_exclusive_group(required=True)
+    action.add_argument('--cmux', choices=sorted(p.parent.name for p in (ROOT / 'cmux').glob('*/terminal.conf')))
+    action.add_argument('--starship', choices=sorted(p.stem for p in (ROOT / 'starship').glob('*.toml')))
+    action.add_argument('--rollback', type=Path, help='Restore a backup directory; refuses intervening edits')
     parser.add_argument('--apply', action='store_true', help='Write after backing up; otherwise preview only')
     parser.add_argument('--home', type=Path, default=Path.home(), help='Alternate home for isolated testing')
-    parser.add_argument('--rollback', type=Path, help='Restore a backup manifest; refuses intervening edits')
     args = parser.parse_args()
     home = args.home.expanduser().resolve()
     if args.rollback:
         rollback(home, args.rollback.resolve(), args.apply)
         return
-    preset = ROOT / 'themes' / args.preset
-    config = home / '.config/cmux/cmux.json'
-    terminal = home / 'Library/Application Support/com.cmuxterm.app/config.ghostty'
-    prompt = home / '.config/cmux/starship-reading.toml'
-    zshrc = home / '.zshrc'
-    slug = 'cmux-reading-' + args.preset
-    codex_theme = home / '.codex/themes' / (slug + '.tmTheme')
-    claude_theme = home / '.claude/themes' / (slug + '.json')
     selection = home / '.config/cmux/reading-selection.json'
     previous = json.loads(selection.read_text()) if selection.exists() else {}
-    style = normalize_style(args.starship or previous.get('starship_style', 'theme'))
-    if style not in styles:
-        raise ValueError('Saved Starship style is unavailable; choose --starship theme')
-    prompt_source = preset / 'starship.toml' if style == 'theme' else ROOT / 'starship' / (style + '.toml')
-    targets = [config, terminal, prompt, zshrc, codex_theme, claude_theme, selection]
-    for p in targets:
+    selected = {k: previous[k] for k in ('preset', 'starship_style') if k in previous}
+    data = {}
+    if args.cmux:
+        preset = ROOT / 'cmux' / args.cmux
+        config = home / '.config/cmux/cmux.json'
+        terminal = home / 'Library/Application Support/com.cmuxterm.app/config.ghostty'
+        app = json.loads(config.read_text()) if config.exists() else {'schemaVersion': 1}
+        merge(app, json.loads((preset / 'app.json').read_text()))
+        shared = home / '.config/ghostty/config'
+        old = terminal.read_text() if terminal.exists() else shared.read_text() if shared.exists() else ''
+        old = re.sub(r'# BEGIN cmux-reading terminal\n.*?# END cmux-reading terminal\n?', '', old, flags=re.S)
+        appearance = (preset / 'terminal.conf').read_text()
+        keys = {line.split('=', 1)[0].strip() for line in appearance.splitlines() if '=' in line and not line.lstrip().startswith('#')}
+        keys.add('theme')
+        lines = [line for line in old.splitlines() if not ('=' in line and line.split('=', 1)[0].strip() in keys)]
+        data[config] = (json.dumps(app, indent=2) + '\n').encode()
+        data[terminal] = ('\n'.join(lines).rstrip() + '\n# BEGIN cmux-reading terminal\n' + appearance + '# END cmux-reading terminal\n').encode()
+        selected['preset'] = args.cmux
+    else:
+        prompt = home / '.config/cmux/starship-reading.toml'
+        zshrc = home / '.zshrc'
+        zsh = zshrc.read_text() if zshrc.exists() else ''
+        if zsh.count(BEGIN) != zsh.count(END) or zsh.count(BEGIN) > 1:
+            raise ValueError('Malformed installer block in .zshrc')
+        zsh = re.sub(re.escape(BEGIN) + r'.*?' + re.escape(END) + r'\n?', '', zsh, flags=re.S)
+        block = BEGIN + '\nif [[ -n "${CMUX_WORKSPACE_ID:-}" ]]; then\n  export STARSHIP_CONFIG="$HOME/.config/cmux/starship-reading.toml"\nfi\n' + END + '\n'
+        data[prompt] = (ROOT / 'starship' / (args.starship + '.toml')).read_bytes()
+        data[zshrc] = (zsh.rstrip() + '\n\n' + block).encode()
+        selected['starship_style'] = args.starship
+        if 'starship init' not in zsh:
+            print('NOTE: Starship must already be installed and initialized in your shell.')
+    data[selection] = (json.dumps(selected) + '\n').encode()
+    for p in data:
         if p.is_symlink() or not p.resolve().is_relative_to(home):
             raise ValueError(f'Refusing symlink/outside-home target: {p}')
-    app = json.loads(config.read_text()) if config.exists() else {'schemaVersion': 1}
-    merge(app, json.loads((preset / 'app.json').read_text()))
-    # Seed a cmux-specific file from the shared config only when it does not exist.
-    shared = home / '.config/ghostty/config'
-    old = terminal.read_text() if terminal.exists() else shared.read_text() if shared.exists() else ''
-    old = re.sub(r'# BEGIN cmux-reading terminal\n.*?# END cmux-reading terminal\n?', '', old, flags=re.S)
-    appearance = (preset / 'terminal.conf').read_text()
-    keys = {line.split('=', 1)[0].strip() for line in appearance.splitlines() if '=' in line and not line.lstrip().startswith('#')}
-    keys.add('theme')
-    lines = [line for line in old.splitlines() if not ('=' in line and line.split('=', 1)[0].strip() in keys)]
-    zsh = zshrc.read_text() if zshrc.exists() else ''
-    if zsh.count(BEGIN) != zsh.count(END) or zsh.count(BEGIN) > 1:
-        raise ValueError('Malformed installer block in .zshrc')
-    zsh = re.sub(re.escape(BEGIN) + r'.*?' + re.escape(END) + r'\n?', '', zsh, flags=re.S)
-    block = BEGIN + '\nif [[ -n "${CMUX_WORKSPACE_ID:-}" ]]; then\n  export STARSHIP_CONFIG="$HOME/.config/cmux/starship-reading.toml"\nfi\n' + END + '\n'
-    data = {
-        codex_theme: (preset / 'codex.tmTheme').read_bytes(),
-        claude_theme: (preset / 'claude-theme.json').read_bytes(),
-        selection: (json.dumps({'preset': args.preset, 'codex_theme': slug, 'claude_theme': 'custom:' + slug, 'starship_style': style}) + '\n').encode(),
-        config: (json.dumps(app, indent=2) + '\n').encode(),
-        terminal: ('\n'.join(lines).rstrip() + '\n# BEGIN cmux-reading terminal\n' + appearance + '# END cmux-reading terminal\n').encode(),
-        prompt: prompt_source.read_bytes(),
-        zshrc: (zsh.rstrip() + '\n\n' + block).encode(),
-    }
     changed = {p: contents for p, contents in data.items() if not p.exists() or p.read_bytes() != contents}
-    print(f'Preset: {args.preset}; {"APPLY" if args.apply else "PREVIEW ONLY"}')
+    print(('cmux: ' + args.cmux) if args.cmux else ('Starship: ' + args.starship))
+    print('APPLY' if args.apply else 'PREVIEW ONLY')
     for p in changed:
         print('Update:', p.relative_to(home))
-    if 'starship init' not in zsh:
-        print('NOTE: Starship must already be installed and initialized in your shell.')
     if not args.apply or not changed:
         return
     backup = home / '.config/cmux/reading-backups' / datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f')
@@ -102,8 +90,7 @@ def main():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_bytes(contents)
     print('Backup:', backup)
-    print('Saved. To apply live: cmux reload-config. No app was restarted.')
-    print('Prompt selection applies to new cmux shells. Running jobs were not touched.')
+    print('Saved. No apps were restarted or running jobs touched.')
 
 def rollback(home, backup, apply):
     entries = json.loads((backup / 'manifest.json').read_text())

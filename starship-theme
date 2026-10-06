@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Choose a Starship prompt style for the selected cmux theme."""
+"""Choose a Starship prompt independently of terminal colors."""
 import os
 import sys
 from pathlib import Path
 
-os.execv(sys.executable, [sys.executable, str(Path(__file__).resolve().with_name('switch-theme')), 'starship', *sys.argv[1:]])
+os.execv(sys.executable, [sys.executable, str(Path(__file__).resolve().parent / 'tools/choose.py'), 'starship', *sys.argv[1:]])
