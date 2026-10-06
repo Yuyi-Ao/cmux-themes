@@ -36,6 +36,70 @@ Terminal themes control cmux colors. **Starship styles** control the shell promp
 
 15 community styles are included with [author credits and original source links](starship/CREDITS.md). Favorites: **07 maths-lover, 08 tungstengmd, 09 loganoxo, 10 adithsureshbabu, 11 mattmc3, 15 danboy**. The `>_` Tokyo Night alternative is saved too. Starship style colors are preserved rather than automatically recolored for light themes.
 
+## Starship previews
+
+Real cmux captures on the same Slate background, using only a demo project. These show the adapted styles included here; see [credits and adaptation details](starship/CREDITS.md). Click any image for the full-size screenshot.
+
+### 10 — adithsureshbabu (current favorite)
+
+Original: [adithsureshbabu](https://github.com/starship/starship/discussions/1107#discussioncomment-13804687) · Style: `community/10-adithsureshbabu`
+
+![Starship 10-adithsureshbabu in cmux](previews/starship/10-adithsureshbabu.png)
+
+<details>
+<summary>07 — maths-lover</summary>
+
+Original: [maths-lover](https://github.com/starship/starship/discussions/1107#discussioncomment-13748923) · Style: `community/07-maths-lover`
+
+![Starship 07-maths-lover in cmux](previews/starship/07-maths-lover.png)
+
+</details>
+
+<details>
+<summary>08 — tungstengmd</summary>
+
+Original: [tungstengmd](https://github.com/starship/starship/discussions/1107#discussioncomment-10214050) · Style: `community/08-tungstengmd`
+
+![Starship 08-tungstengmd in cmux](previews/starship/08-tungstengmd.png)
+
+</details>
+
+<details>
+<summary>09 — loganoxo</summary>
+
+Original: [loganoxo](https://github.com/starship/starship/discussions/1107#discussioncomment-11363178) · Style: `community/09-loganoxo`
+
+![Starship 09-loganoxo in cmux](previews/starship/09-loganoxo.png)
+
+</details>
+
+<details>
+<summary>11 — mattmc3</summary>
+
+Original: [mattmc3](https://github.com/starship/starship/discussions/1107#discussioncomment-4783851) · Style: `community/11-mattmc3`
+
+![Starship 11-mattmc3 in cmux](previews/starship/11-mattmc3.png)
+
+</details>
+
+<details>
+<summary>15 — danboy</summary>
+
+Original: [danboy](https://github.com/starship/starship/discussions/1107#discussioncomment-11587198) · Style: `community/15-danboy`
+
+![Starship 15-danboy in cmux](previews/starship/15-danboy.png)
+
+</details>
+
+<details>
+<summary>Tokyo Night — terminal mark &gt;_</summary>
+
+Based on the official [Starship Tokyo Night preset](https://starship.rs/presets/tokyo-night), with a terminal mark replacing the Apple icon. Style: `tokyo-night/terminal`.
+
+![Tokyo Night terminal mark in cmux](previews/starship/tokyo-night-terminal.png)
+
+</details>
+
 ## Themes
 
 Real cmux screenshots, captured in an isolated `/tmp/theme-demo` workspace with sample code. These are unedited window captures, not rendered mockups. Click an image to view it at full size.
