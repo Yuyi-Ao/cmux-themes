@@ -28,7 +28,10 @@ def main():
     action.add_argument('--rollback', type=Path, help='Restore a backup directory; refuses intervening edits')
     parser.add_argument('--apply', action='store_true', help='Write after backing up; otherwise preview only')
     parser.add_argument('--home', type=Path, default=Path.home(), help='Alternate home for isolated testing')
+    parser.add_argument('--with-cli-themes', action='store_true', help='With --cmux, install optional Codex/Claude theme files without selecting them')
     args = parser.parse_args()
+    if args.with_cli_themes and not args.cmux:
+        parser.error('--with-cli-themes requires --cmux')
     home = args.home.expanduser().resolve()
     if args.rollback:
         rollback(home, args.rollback.resolve(), args.apply)
@@ -53,6 +56,17 @@ def main():
         data[config] = (json.dumps(app, indent=2) + '\n').encode()
         data[terminal] = ('\n'.join(lines).rstrip() + '\n# BEGIN cmux-reading terminal\n' + appearance + '# END cmux-reading terminal\n').encode()
         selected['preset'] = args.cmux
+        if args.with_cli_themes:
+            slug = 'cmux-reading-' + args.cmux
+            for source, target in [
+                (preset / 'codex.tmTheme', home / '.codex/themes' / (slug + '.tmTheme')),
+                (preset / 'claude.json', home / '.claude/themes' / (slug + '.json')),
+            ]:
+                if source.is_file():
+                    data[target] = source.read_bytes()
+                    print('Optional CLI theme:', target.relative_to(home))
+                else:
+                    print('No optional CLI theme:', source.name)
     else:
         prompt = home / '.config/cmux/starship-reading.toml'
         zshrc = home / '.zshrc'
@@ -91,6 +105,8 @@ def main():
         p.write_bytes(contents)
     print('Backup:', backup)
     print('Saved. No apps were restarted or running jobs touched.')
+    if args.with_cli_themes:
+        print('Use /theme inside Codex or Claude to select the installed theme. Existing selections are unchanged.')
 
 def rollback(home, backup, apply):
     entries = json.loads((backup / 'manifest.json').read_text())

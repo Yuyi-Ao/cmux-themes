@@ -1,0 +1,28 @@
+{
+  "name": "cmux-reading-slate",
+  "base": "dark-daltonized",
+  "overrides": {
+    "text": "#c5cbd2",
+    "inverseText": "#22272e",
+    "claude": "#8faec3",
+    "claudeShimmer": "#8faec3",
+    "success": "#a3b58b",
+    "error": "#c98585",
+    "warning": "#c5af83",
+    "inactive": "#8c9299",
+    "subtle": "#636970",
+    "promptBorder": "#636970",
+    "promptBorderShimmer": "#636970",
+    "suggestion": "#8faec3",
+    "permission": "#b6a0be",
+    "planMode": "#88b4ad",
+    "userMessageBackground": "#2d3239",
+    "bashMessageBackgroundColor": "#2a2f36",
+    "memoryBackgroundColor": "#2a2f36",
+    "selectionBg": "#3c4652",
+    "diffAdded": "#373e3d",
+    "diffRemoved": "#3d363c",
+    "diffAddedWord": "#464f48",
+    "diffRemovedWord": "#514146"
+  }
+}

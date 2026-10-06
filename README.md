@@ -23,7 +23,21 @@ cmux themes require cmux and Python 3.10+. The included terminal configs use Jet
 - **cmux:** background, text colors, font, cursor, and app appearance. Changing it leaves your prompt alone.
 - **Starship:** prompt layout, icons, and colors. Changing it leaves your terminal theme alone.
 
-Codex and Claude use their own settings. These commands do not install or select application-specific themes, restart apps, or interrupt running jobs.
+Codex and Claude keep their own theme selections. Optional matching theme files can be installed as described below. No command restarts apps or interrupts running jobs.
+
+## Optional Codex / Claude colors
+
+```sh
+./cmux-theme slate --with-cli-themes
+```
+
+This applies the cmux theme and copies its optional CLI theme files. It does **not** select them or change Starship. Start Codex or Claude normally, enter `/theme`, and select `cmux-reading-slate`. If a newly installed theme is missing from the menu, start a new CLI session.
+
+To switch back, use `/theme` again and select your previous theme. In our Slate comparison, these were Catppuccin Mocha in Codex and Dark mode in Claude. Repository restore does not undo choices made inside those applications; select a built-in theme before removing custom files with restore.
+
+Files are installed under `~/.codex/themes/` and `~/.claude/themes/`. If you use `CODEX_HOME` or `CLAUDE_CONFIG_DIR`, copy the files into that directory's `themes/` folder instead.
+
+Real native theme-picker comparisons on Slate (top: default; bottom: matching colors): [Codex](previews/cmux/slate-codex-comparison.png) · [Claude](previews/cmux/slate-claude-comparison.png).
 
 ## A few favorites
 
@@ -57,7 +71,7 @@ Either command undoes the latest switch, whether it changed cmux or Starship. Ba
 ## Files
 
 ```text
-cmux/<name>/         # terminal.conf + app.json
+cmux/<name>/         # terminal.conf + app.json; optional codex.tmTheme + claude.json
 starship/            # one TOML per prompt style, credits, and menu order
 previews/cmux/       # terminal screenshots
 previews/starship/   # prompt screenshots
@@ -70,7 +84,7 @@ The installer stores cmux appearance in `~/Library/Application Support/com.cmuxt
 ## Contribute
 
 - **Starship:** add `starship/my-style.toml`, then try `./starship-theme my-style`.
-- **cmux:** copy `cmux/slate/` to `cmux/my-theme/`, edit its two files, then try `./cmux-theme my-theme`.
+- **cmux:** copy `cmux/slate/` to `cmux/my-theme/`, edit `terminal.conf` and `app.json`, then try `./cmux-theme my-theme`. Optional `codex.tmTheme` and `claude.json` files may be omitted; if included, adapt their colors and theme names to `cmux-reading-my-theme`.
 - Both menus discover new themes automatically. Include a real demo screenshot and an author/source link in the corresponding `CREDITS.md` for adapted designs. Submit a pull request; do not include private paths, credentials, or local backups.
 
 Preview changes without writing:

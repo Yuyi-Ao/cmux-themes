@@ -45,6 +45,23 @@ class InstallTests(unittest.TestCase):
             self.assertFalse((self.home / name).exists())
         self.assertEqual(self.selection(), {'starship_style': '10-adithsureshbabu'})
 
+    def test_optional_cli_files_do_not_select_app_themes_and_are_restorable(self):
+        files = {'.codex/config.toml': b'[tui]\ntheme="catppuccin-mocha"\n', '.claude/settings.json': b'{"theme":"dark"}\n', '.config/cmux/starship-reading.toml': b'# existing prompt\n'}
+        for name, data in files.items(): self.put(name, data)
+        self.run_install('--cmux', 'slate', '--with-cli-themes', '--apply')
+        for name, data in files.items(): self.assertEqual((self.home / name).read_bytes(), data)
+        for source, target in [('codex.tmTheme', '.codex/themes/cmux-reading-slate.tmTheme'), ('claude.json', '.claude/themes/cmux-reading-slate.json')]:
+            self.assertEqual((self.home / target).read_bytes(), (ROOT / 'cmux/slate' / source).read_bytes())
+        backup = next((self.home / '.config/cmux/reading-backups').iterdir())
+        self.run_install('--rollback', str(backup), '--apply')
+        self.assertFalse((self.home / '.codex/themes/cmux-reading-slate.tmTheme').exists())
+        self.assertFalse((self.home / '.claude/themes/cmux-reading-slate.json').exists())
+        for name, data in files.items(): self.assertEqual((self.home / name).read_bytes(), data)
+
+    def test_cli_flag_rejected_for_prompt_changes(self):
+        self.run_install('--starship', 'tokyo-night', '--with-cli-themes', '--apply', ok=False)
+        self.assertEqual(list(self.home.iterdir()), [])
+
     def test_switches_preserve_the_other_layer(self):
         self.run_install('--cmux', 'slate', '--apply')
         terminal = self.home / 'Library/Application Support/com.cmuxterm.app/config.ghostty'

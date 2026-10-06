@@ -20,7 +20,9 @@ Read only relevant appearance files and `~/.config/cmux/reading-selection.json` 
 ./starship-theme 10-adithsureshbabu
 ```
 
-Each command changes only its own layer plus selection metadata. A cmux switch does not install or modify a prompt. A Starship switch does not install or modify terminal colors, even on a first install. Do not introduce theme-following behavior or application-specific CLI themes.
+Each command changes only its own layer plus selection metadata. A cmux switch does not install or modify a prompt. A Starship switch does not install or modify terminal colors, even on a first install. Do not introduce theme-following behavior.
+
+When requested, `./cmux-theme slate --with-cli-themes` also installs optional Codex/Claude theme files into their standard home directories. It never selects those themes. The user chooses `cmux-reading-slate` through `/theme` in each app and switches back through the same menu. Do not add CLI launchers or modify application settings. For custom `CODEX_HOME` or `CLAUDE_CONFIG_DIR`, explain that the theme files belong under that directory's `themes/`; the installer uses standard locations only.
 
 Use explicit IDs when acting for a user. For a dry run:
 
@@ -37,7 +39,7 @@ Verify the relevant selection field and installed bytes: `preset` for cmux, `sta
 
 ## Restore
 
-`./cmux-theme restore` and `./starship-theme restore` both undo the latest unrestored switch of either kind. Backups are local under `~/.config/cmux/reading-backups/`. If files changed after installation, preserve those edits and inspect the conflict instead of forcing rollback.
+`./cmux-theme restore` and `./starship-theme restore` both undo the latest unrestored switch of either kind, including optional CLI files installed in that switch. They do not undo choices made later in an application's `/theme` menu. Switch the application to a built-in theme before removing selected custom files. Backups are local under `~/.config/cmux/reading-backups/`. If files changed after installation, preserve those edits and inspect the conflict instead of forcing rollback.
 
 For isolated restore, run `python3 tools/install.py --home <temporary-home> --rollback <backup-directory>`; add `--apply` to write. Pass the backup directory, not its manifest file. Do not delete user backups or previously installed configuration as part of repository cleanup.
 

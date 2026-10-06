@@ -1,0 +1,28 @@
+{
+  "name": "cmux-reading-graphite",
+  "base": "dark-daltonized",
+  "overrides": {
+    "text": "#c6c7c8",
+    "inverseText": "#202224",
+    "claude": "#7daea3",
+    "claudeShimmer": "#7daea3",
+    "success": "#a9b665",
+    "error": "#ea6962",
+    "warning": "#d8a657",
+    "inactive": "#8c8d8f",
+    "subtle": "#626466",
+    "promptBorder": "#626466",
+    "promptBorderShimmer": "#626466",
+    "suggestion": "#7daea3",
+    "permission": "#d3869b",
+    "planMode": "#89b482",
+    "userMessageBackground": "#2c2e2f",
+    "bashMessageBackgroundColor": "#282a2c",
+    "memoryBackgroundColor": "#282a2c",
+    "selectionBg": "#3d4145",
+    "diffAdded": "#363a2e",
+    "diffRemoved": "#402d2e",
+    "diffAddedWord": "#464b36",
+    "diffRemovedWord": "#593635"
+  }
+}

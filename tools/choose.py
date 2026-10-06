@@ -13,7 +13,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('kind', choices=['cmux', 'starship'])
     parser.add_argument('choice', nargs='?', help='Theme/style ID, or restore to undo the latest switch')
+    parser.add_argument('--with-cli-themes', action='store_true', help='Install optional Codex/Claude themes alongside cmux colors; select them with /theme')
     args = parser.parse_args()
+    if args.with_cli_themes and (args.kind != 'cmux' or args.choice == 'restore'):
+        parser.error('--with-cli-themes is only for a cmux theme choice')
     if args.kind == 'cmux':
         available = sorted(p.parent.name for p in (ROOT / 'cmux').glob('*/terminal.conf'))
         preferred = CMUX_ORDER
@@ -40,6 +43,8 @@ def main():
         cmd += ['--rollback', str(backups[-1])]
     elif choice in choices:
         cmd += ['--' + args.kind, choice]
+        if args.with_cli_themes:
+            cmd += ['--with-cli-themes']
     else:
         raise SystemExit(f'Unknown {args.kind} choice: {choice}')
     subprocess.run([*cmd, '--apply'], check=True)
