@@ -40,7 +40,7 @@ Real cmux screenshots, cropped and stacked at full page width for readability. T
 | 09 · minimal layout | [Open](previews/starship/09-loganoxo.png) | [loganoxo](https://github.com/starship/starship/discussions/1107#discussioncomment-11363178) |
 | Tokyo Night · terminal | [Open](previews/starship/tokyo-night-terminal.png) | [Starship Tokyo Night](https://starship.rs/presets/tokyo-night) |
 
-The menus include 10 terminal themes and 15 community prompts, plus minimal and Tokyo Night alternatives. All community prompts have [author credits and source links](starship/CREDITS.md). Saved favorites: 07, 08, 09, 10, 11, and 15.
+The menus include 10 terminal themes and 10 Starship choices (including “follow terminal theme”). Prompts are ordered by personal preference: **10, 09, 11, 15, 08, 07**, then Tokyo Night, two additional community styles, and “follow terminal theme”. Original style IDs stay unchanged; menu positions are separate. All community prompts retain [author credits and source links](starship/CREDITS.md). The order is editable in `starship/order.json`.
 
 ## Undo and optional CLI themes
 

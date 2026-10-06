@@ -35,8 +35,8 @@ def main():
         if len(args) > 1 and args[1] in ('--help', '-h'):
             print('./starship-theme [style | theme]'); return
         styles = sorted(str(p.relative_to(ROOT/'starship').with_suffix('')) for p in (ROOT/'starship').rglob('*.toml')) + ['theme']
-        favorites = ['community/10-adithsureshbabu', 'community/07-maths-lover', 'community/08-tungstengmd', 'community/09-loganoxo', 'community/11-mattmc3', 'community/15-danboy']
-        styles = favorites + [name for name in styles if name not in favorites]
+        preferred = json.loads((ROOT/'starship/order.json').read_text())
+        styles = [name for name in preferred if name in styles] + [name for name in styles if name not in preferred]
         if len(args) > 1: style = args[1]
         else:
             for i, name in enumerate(styles, 1): print(f'{i:2}. {name}')

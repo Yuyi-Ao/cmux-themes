@@ -9,7 +9,7 @@ description: Configure cmux terminal colors and independent Starship prompt styl
 
 Find the repository root containing `switch-theme`, `themes/`, `starship/`, and `tools/install.py`. From this skill's directory, the root is three parents up. If the skill was copied elsewhere, locate the checkout instead of assuming a machine-specific path.
 
-Read `README.md` for usage and `starship/CREDITS.md` for attribution. Enumerate `themes/*/terminal.conf` and `starship/**/*.toml` for valid IDs. Read `starship/community/sources.json` for favorites and exact source URLs; menu positions are not community style IDs.
+Read `README.md` for usage and `starship/CREDITS.md` for attribution. Enumerate `themes/*/terminal.conf` and `starship/**/*.toml` for valid IDs. Read `starship/community/sources.json` for favorites and exact source URLs; menu positions are not community style IDs. `starship/order.json` stores the preferred menu order; keep explicitly selected styles when curating the collection.
 
 Inspect `~/.config/cmux/reading-selection.json` when present. Read only required appearance files; do not inspect credentials or conversation logs. Check macOS, Python 3.10+, cmux, Starship initialization, and the configured Nerd Font before promising live results. Do not install missing dependencies unless authorized.
 
