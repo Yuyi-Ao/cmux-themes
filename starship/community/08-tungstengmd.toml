@@ -1,0 +1,45 @@
+# Original author: tungstengmd
+# Source: https://github.com/starship/starship/discussions/1107#discussioncomment-10214050
+# Adaptations: see ../CREDITS.md
+"$schema" = "https://starship.rs/config-schema.json"
+"add_newline" = false
+"format" = "[╭{owo} ](bold green)$username$directory$battery$all$line_break$character"
+"right_format" = "$git_branch$git_state$git_status$time$cmd_duration"
+["character"]
+"success_symbol" = "[╰─>](bold green)"
+"error_symbol" = "[x >](bold red)"
+["git_branch"]
+"format" = "[ $symbol$branch]($style) "
+"style" = "cyan"
+["directory"]
+"format" = "[](fg:#a3ca5c bg:none)[$path]($style)[ ](fg:#a3ca5c bg:none)"
+"style" = "fg:#000000 bg:#a3ca5c"
+"truncate_to_repo" = false
+["username"]
+"show_always" = true
+"disabled" = true
+["time"]
+"disabled" = false
+["cmd_duration"]
+"min_time" = 0
+"disabled" = false
+["battery"]
+"disabled" = false
+["hostname"]
+"disabled" = true
+["localip"]
+"disabled" = true
+["aws"]
+"disabled" = true
+["gcloud"]
+"disabled" = true
+["azure"]
+"disabled" = true
+["kubernetes"]
+"disabled" = true
+["docker_context"]
+"disabled" = true
+["env_var"]
+"disabled" = true
+["sudo"]
+"disabled" = true

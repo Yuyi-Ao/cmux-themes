@@ -23,6 +23,8 @@ def merge(base, patch):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('preset', choices=sorted(p.name for p in (ROOT / 'themes').iterdir() if p.is_dir()), nargs='?', default='dark')
+    styles = ['theme'] + sorted(str(p.relative_to(ROOT / 'starship').with_suffix('')) for p in (ROOT / 'starship').rglob('*.toml'))
+    parser.add_argument('--starship', choices=styles, help='Starship style, independent of terminal theme')
     parser.add_argument('--apply', action='store_true', help='Write after backing up; otherwise preview only')
     parser.add_argument('--home', type=Path, default=Path.home(), help='Alternate home for isolated testing')
     parser.add_argument('--rollback', type=Path, help='Restore a backup manifest; refuses intervening edits')
@@ -40,6 +42,11 @@ def main():
     codex_theme = home / '.codex/themes' / (slug + '.tmTheme')
     claude_theme = home / '.claude/themes' / (slug + '.json')
     selection = home / '.config/cmux/reading-selection.json'
+    previous = json.loads(selection.read_text()) if selection.exists() else {}
+    style = args.starship or previous.get('starship_style', 'theme')
+    if style not in styles:
+        raise ValueError('Saved Starship style is unavailable; choose --starship theme')
+    prompt_source = preset / 'starship.toml' if style == 'theme' else ROOT / 'starship' / (style + '.toml')
     targets = [config, terminal, prompt, zshrc, codex_theme, claude_theme, selection]
     for p in targets:
         if p.is_symlink() or not p.resolve().is_relative_to(home):
@@ -62,10 +69,10 @@ def main():
     data = {
         codex_theme: (preset / 'codex.tmTheme').read_bytes(),
         claude_theme: (preset / 'claude-theme.json').read_bytes(),
-        selection: (json.dumps({'preset': args.preset, 'codex_theme': slug, 'claude_theme': 'custom:' + slug}) + '\n').encode(),
+        selection: (json.dumps({'preset': args.preset, 'codex_theme': slug, 'claude_theme': 'custom:' + slug, 'starship_style': style}) + '\n').encode(),
         config: (json.dumps(app, indent=2) + '\n').encode(),
         terminal: ('\n'.join(lines).rstrip() + '\n# BEGIN cmux-reading terminal\n' + appearance + '# END cmux-reading terminal\n').encode(),
-        prompt: (preset / 'starship.toml').read_bytes(),
+        prompt: prompt_source.read_bytes(),
         zshrc: (zsh.rstrip() + '\n\n' + block).encode(),
     }
     changed = {p: contents for p, contents in data.items() if not p.exists() or p.read_bytes() != contents}

@@ -21,6 +21,19 @@ Pick a number. Your previous settings are backed up automatically. Existing sess
 
 Normal CLI arguments can follow `codex` or `claude`. These launchers do not change global CLI settings. Already-running CLI sessions retain their own theme settings. Restore refuses to overwrite files edited after a switch.
 
+## Starship styles
+
+Terminal themes control cmux colors. **Starship styles** control the shell prompt layout, icons, and information. They can now be selected independently; changing the terminal theme preserves your chosen Starship style.
+
+```sh
+./switch-theme starship
+./switch-theme starship community/10-adithsureshbabu
+./switch-theme starship tokyo-night/terminal
+./switch-theme starship theme   # follow each terminal theme's bundled prompt again
+```
+
+15 community styles are included with [author credits and original source links](starship/CREDITS.md). Favorites: **07 maths-lover, 08 tungstengmd, 09 loganoxo, 10 adithsureshbabu, 11 mattmc3, 15 danboy**. The `>_` Tokyo Night alternative is saved too. Starship style colors are preserved rather than automatically recolored for light themes.
+
 ## Themes
 
 Real cmux screenshots, captured in an isolated `/tmp/theme-demo` workspace with sample code. These are unedited window captures, not rendered mockups. Click an image to view it at full size.
@@ -80,6 +93,6 @@ Claude theme configs are included, but Claude screenshots are not yet available.
 - `themes/`: ten sets of terminal, prompt, and CLI theme configuration.
 - `previews/`: real cmux screenshots shown above.
 - `tools/`: switching and CLI launch helpers.
-- `prompt-variants/minimal/`: optional minimal prompts for Slate, Cool Light, and Plum.
+- `starship/minimal/`: optional minimal prompts for Slate, Cool Light, and Plum.
 
 Settings backups stay on your machine in `~/.config/cmux/reading-backups/`; they are never copied into this repository. Only cmux appearance, its prompt selection, and custom CLI theme files are installed. Shared Ghostty settings, model settings, credentials, and running jobs are preserved.

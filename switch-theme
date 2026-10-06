@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Choose a cmux theme; preserve running sessions."""
-import os, subprocess, sys
+import os, subprocess, sys, json
 from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 THEMES = ['slate', 'cool-light', 'plum', 'dark', 'forest', 'graphite', 'light', 'parchment', 'mist', 'white']
@@ -9,17 +9,32 @@ def main():
     if not args:
         print('Choose a theme:')
         for i, name in enumerate(THEMES, 1): print(f'{i:2}. {name}')
-        print(' r. Restore previous settings\n q. Quit')
+        print(' s. Choose Starship style\n r. Restore previous settings\n q. Quit')
         choice = input('> ').strip()
         if choice == 'q': return
-        args = ['restore' if choice == 'r' else THEMES[int(choice)-1] if choice.isdigit() and 1 <= int(choice) <= len(THEMES) else choice]
+        args = ['starship' if choice == 's' else 'restore' if choice == 'r' else THEMES[int(choice)-1] if choice.isdigit() and 1 <= int(choice) <= len(THEMES) else choice]
     action = args[0]
     if action in ('codex', 'claude'):
         os.execv(sys.executable, [sys.executable, str(ROOT/'tools/launch.py'), *args])
     if action in ('--help', '-h'):
-        print('./switch-theme [theme | restore | codex | claude]'); return
+        print('./switch-theme [theme | starship [style] | restore | codex | claude]'); return
     cmd = [sys.executable, str(ROOT/'tools/install.py')]
-    if action == 'restore':
+    if action == 'starship':
+        styles = sorted(str(p.relative_to(ROOT/'starship').with_suffix('')) for p in (ROOT/'starship').rglob('*.toml')) + ['theme']
+        favorites = ['community/10-adithsureshbabu', 'community/07-maths-lover', 'community/08-tungstengmd', 'community/09-loganoxo', 'community/11-mattmc3', 'community/15-danboy']
+        styles = favorites + [name for name in styles if name not in favorites]
+        if len(args) > 1: style = args[1]
+        else:
+            for i, name in enumerate(styles, 1): print(f'{i:2}. {name}')
+            choice = input('Starship style (q to cancel)> ').strip()
+            if choice == 'q': return
+            if not choice.isdigit() or not 1 <= int(choice) <= len(styles): raise SystemExit('Invalid choice.')
+            style = styles[int(choice)-1]
+        if style not in styles: raise SystemExit('Unknown Starship style.')
+        selection = Path.home()/'.config/cmux/reading-selection.json'
+        preset = json.loads(selection.read_text())['preset'] if selection.exists() else 'slate'
+        cmd += [preset, '--starship', style, '--apply']
+    elif action == 'restore':
         backups = sorted(p for p in (Path.home()/'.config/cmux/reading-backups').glob('*') if (p/'manifest.json').is_file() and not (p/'.restored').exists())
         if not backups: raise SystemExit('No previous settings to restore.')
         cmd += ['--rollback', str(backups[-1]), '--apply']
