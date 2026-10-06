@@ -1,6 +1,8 @@
-# cmux themes
+# cmux + Starship Terminal Setup
 
-Ten readable themes for cmux, Starship, Codex CLI, and Claude Code.
+Coordinated terminal colors and shell prompt styles for cmux and Starship.
+
+Choose from 10 cmux color themes and independently switch Starship prompt styles. Optional Codex CLI and Claude Code theme launchers are included.
 
 ## Switch
 
