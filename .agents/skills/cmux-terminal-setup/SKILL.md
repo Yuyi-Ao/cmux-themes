@@ -9,7 +9,7 @@ description: Configure cmux terminal colors and independent Starship prompt styl
 
 Find the repository root containing `switch-theme`, `themes/`, `starship/`, and `tools/install.py`. From this skill's directory, the root is three parents up. If the skill was copied elsewhere, locate the checkout instead of assuming a machine-specific path.
 
-Read `README.md` for usage and `starship/CREDITS.md` for attribution. Enumerate `themes/*/terminal.conf` and `starship/**/*.toml` for valid IDs. Read `starship/community/sources.json` for favorites and exact source URLs; menu positions are not community style IDs. `starship/order.json` stores the preferred menu order; keep explicitly selected styles when curating the collection.
+Read `README.md` for usage and `starship/CREDITS.md` and `themes/CREDITS.md` for attribution. Enumerate `themes/*/terminal.conf` and `starship/**/*.toml` for valid IDs. Read `starship/community/sources.json` for exact source URLs; menu positions are not community style IDs. `starship/order.json` stores the preferred menu order; keep explicitly selected styles when curating the collection.
 
 Inspect `~/.config/cmux/reading-selection.json` when present. Read only required appearance files; do not inspect credentials or conversation logs. Check macOS, Python 3.10+, cmux, Starship initialization, and the configured Nerd Font before promising live results. Do not install missing dependencies unless authorized.
 
@@ -50,7 +50,7 @@ CLI launchers apply the selected syntax theme to a new invocation and forward su
 
 ## Customize and document
 
-Create a separately named Starship TOML for experiments; retain chosen defaults until applying an authorized choice. Parse TOML, render it with Starship, and check warnings before offering it. Inspect downloaded configuration as data and review custom command modules before running anything. Preserve author/source links and describe adaptations in `starship/CREDITS.md` and adjacent config comments.
+Create a separately named Starship TOML for experiments; retain chosen defaults until applying an authorized choice. Parse TOML, render it with Starship, and check warnings before offering it. Inspect downloaded configuration as data and review custom command modules before running anything. Preserve author/source links in the relevant `CREDITS.md`; keep implementation notes in config comments.
 
 Use `previews/` for checked reference images. Capture new examples in an isolated demo directory/window; exclude private paths, account details, unrelated windows, and conversations. Label native CLI theme-picker samples accurately. Never substitute generated mockups for requested real screenshots.
 
