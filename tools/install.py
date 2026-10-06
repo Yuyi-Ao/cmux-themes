@@ -10,6 +10,12 @@ END = '# <<< cmux-reading-config <<<'
 def digest(data):
     return hashlib.sha256(data).hexdigest()
 
+def normalize_style(style):
+    # Keep existing commands and saved selections working after directory cleanup.
+    if style == 'tokyo-night/terminal':
+        return 'tokyo-night'
+    return style.removeprefix('community/')
+
 def merge(base, patch):
     for key, value in patch.items():
         if isinstance(value, dict):
@@ -24,7 +30,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('preset', choices=sorted(p.name for p in (ROOT / 'themes').iterdir() if p.is_dir()), nargs='?', default='dark')
     styles = ['theme'] + sorted(str(p.relative_to(ROOT / 'starship').with_suffix('')) for p in (ROOT / 'starship').rglob('*.toml'))
-    parser.add_argument('--starship', choices=styles, help='Starship style, independent of terminal theme')
+    parser.add_argument('--starship', type=normalize_style, choices=styles, help='Starship style, independent of terminal theme')
     parser.add_argument('--apply', action='store_true', help='Write after backing up; otherwise preview only')
     parser.add_argument('--home', type=Path, default=Path.home(), help='Alternate home for isolated testing')
     parser.add_argument('--rollback', type=Path, help='Restore a backup manifest; refuses intervening edits')
@@ -43,7 +49,7 @@ def main():
     claude_theme = home / '.claude/themes' / (slug + '.json')
     selection = home / '.config/cmux/reading-selection.json'
     previous = json.loads(selection.read_text()) if selection.exists() else {}
-    style = args.starship or previous.get('starship_style', 'theme')
+    style = normalize_style(args.starship or previous.get('starship_style', 'theme'))
     if style not in styles:
         raise ValueError('Saved Starship style is unavailable; choose --starship theme')
     prompt_source = preset / 'starship.toml' if style == 'theme' else ROOT / 'starship' / (style + '.toml')

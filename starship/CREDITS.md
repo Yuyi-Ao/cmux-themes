@@ -10,4 +10,4 @@
 | `07-maths-lover` | [maths-lover](https://github.com/starship/starship/discussions/1107#discussioncomment-13748923) |
 | `04-Gaurav-Gosain` | [Gaurav-Gosain](https://github.com/starship/starship/discussions/1107#discussioncomment-11666645) |
 | `06-fredericrous` | [fredericrous](https://github.com/starship/starship/discussions/1107#discussioncomment-1023024) |
-| `tokyo-night/terminal` | [Starship Tokyo Night](https://starship.rs/presets/tokyo-night) |
+| `tokyo-night` | [Starship Tokyo Night](https://starship.rs/presets/tokyo-night) |

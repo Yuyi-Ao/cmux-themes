@@ -44,6 +44,7 @@ def main():
             if choice == 'q': return
             if not choice.isdigit() or not 1 <= int(choice) <= len(styles): raise SystemExit('Invalid choice.')
             style = styles[int(choice)-1]
+        style = 'tokyo-night' if style == 'tokyo-night/terminal' else style.removeprefix('community/')
         if style not in styles: raise SystemExit('Unknown Starship style.')
         selection = Path.home()/'.config/cmux/reading-selection.json'
         preset = json.loads(selection.read_text())['preset'] if selection.exists() else 'slate'

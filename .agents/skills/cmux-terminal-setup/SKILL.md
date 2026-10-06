@@ -9,7 +9,7 @@ description: Configure cmux terminal colors and independent Starship prompt styl
 
 Find the repository root containing `switch-theme`, `themes/`, `starship/`, and `tools/install.py`. From this skill's directory, the root is three parents up. If the skill was copied elsewhere, locate the checkout instead of assuming a machine-specific path.
 
-Read `README.md` for usage and `starship/CREDITS.md` and `themes/CREDITS.md` for attribution. Enumerate `themes/*/terminal.conf` and `starship/**/*.toml` for valid IDs. Read `starship/community/sources.json` for exact source URLs; menu positions are not community style IDs. `starship/order.json` stores the preferred menu order; keep explicitly selected styles when curating the collection.
+Read `README.md` for usage and `starship/CREDITS.md` and `themes/CREDITS.md` for attribution. Enumerate `themes/*/terminal.conf` and `starship/**/*.toml` for valid IDs. Read `starship/sources.json` for exact source URLs; menu positions are not community style IDs. `starship/order.json` stores the preferred menu order; keep explicitly selected styles when curating the collection.
 
 Inspect `~/.config/cmux/reading-selection.json` when present. Read only required appearance files; do not inspect credentials or conversation logs. Check macOS, Python 3.10+, cmux, Starship initialization, and the configured Nerd Font before promising live results. Do not install missing dependencies unless authorized.
 
@@ -21,12 +21,12 @@ Run commands from the verified repository root, with explicit IDs rather than in
 
 ```sh
 ./cmux-theme slate
-./starship-theme community/10-adithsureshbabu
-./starship-theme tokyo-night/terminal
+./starship-theme 10-adithsureshbabu
+./starship-theme tokyo-night
 ./starship-theme theme
 ```
 
-Use `python3 tools/install.py slate` for a dry run. Add `--starship community/10-adithsureshbabu` to preview an explicit prompt choice. For isolated checks, pass `--home` with a temporary directory; add `--apply` only to change that temporary home.
+Use `python3 tools/install.py slate` for a dry run. Add `--starship 10-adithsureshbabu` to preview an explicit prompt choice. For isolated checks, pass `--home` with a temporary directory; add `--apply` only to change that temporary home.
 
 Use the installer rather than directly overwriting user configuration. It backs up changed files, preserves unrelated cmux settings, and stores the selected theme and style. Changing a terminal theme keeps an explicitly selected Starship style. A prompt-only switch uses the currently selected terminal theme; without a saved selection the wrapper defaults to Slate, so inspect the existing setup before a first install.
 
