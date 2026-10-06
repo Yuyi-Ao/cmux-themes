@@ -4,8 +4,20 @@ import os, subprocess, sys, json
 from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 THEMES = ['slate', 'cool-light', 'plum', 'dark', 'forest', 'graphite', 'light', 'parchment', 'mist', 'white']
+THEMES += sorted(p.name for p in (ROOT/'themes').iterdir() if p.is_dir() and (p/'terminal.conf').is_file() and p.name not in THEMES)
 def main():
     args = sys.argv[1:]
+    if args and args[0] == 'cmux':
+        args = args[1:]
+        if args and args[0] in ('--help', '-h'):
+            print('./cmux-theme [theme | restore]'); return
+        if not args:
+            for i, name in enumerate(THEMES, 1): print(f'{i:2}. {name}')
+            choice = input('cmux theme (q to cancel)> ').strip()
+            if choice == 'q': return
+            if not choice.isdigit() or not 1 <= int(choice) <= len(THEMES): raise SystemExit('Invalid choice.')
+            args = [THEMES[int(choice)-1]]
+        if args[0] not in THEMES and args[0] != 'restore': raise SystemExit('Unknown cmux theme.')
     if not args:
         print('Choose a theme:')
         for i, name in enumerate(THEMES, 1): print(f'{i:2}. {name}')
@@ -20,6 +32,8 @@ def main():
         print('./switch-theme [theme | starship [style] | restore | codex | claude]'); return
     cmd = [sys.executable, str(ROOT/'tools/install.py')]
     if action == 'starship':
+        if len(args) > 1 and args[1] in ('--help', '-h'):
+            print('./starship-theme [style | theme]'); return
         styles = sorted(str(p.relative_to(ROOT/'starship').with_suffix('')) for p in (ROOT/'starship').rglob('*.toml')) + ['theme']
         favorites = ['community/10-adithsureshbabu', 'community/07-maths-lover', 'community/08-tungstengmd', 'community/09-loganoxo', 'community/11-mattmc3', 'community/15-danboy']
         styles = favorites + [name for name in styles if name not in favorites]

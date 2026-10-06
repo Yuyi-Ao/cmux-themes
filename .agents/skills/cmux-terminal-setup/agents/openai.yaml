@@ -1,0 +1,4 @@
+interface:
+  display_name: "cmux Terminal Setup"
+  short_description: "Switch cmux colors and Starship prompt styles"
+  default_prompt: "Use $cmux-terminal-setup to switch my terminal theme while preserving my Starship style."
